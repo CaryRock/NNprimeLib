@@ -3,7 +3,8 @@
 # input mass. Generates an output file corresponding to the input mass of all
 # the final values of the files.
 import numpy as np
-import os as os
+import os
+import sys
 from NNprimeLib import convenience as nnpc
 from concurrent.futures import ProcessPoolExecutor as ppe
 
@@ -13,10 +14,9 @@ from concurrent.futures import ProcessPoolExecutor as ppe
 # which is assumed to be the end point - a more clever analysis method could
 # be developed, but isn't necessary at the moment).
 
-def analyze_file(dir: str) -> None:
-    print(f"dir = {dir}")
+def analyze_file(dir: str) -> int:
     num_data_files      = 0
-    num_columns_in_file = 6
+    num_columns_in_file = 7
     header              = []    
     mass                = 0.0
     theta               = 0.0
@@ -34,13 +34,16 @@ def analyze_file(dir: str) -> None:
         last_vals[index, 0] = theta
         last_vals[index, 1:] = data[-1]
 
+    # TODO: Implement method to sort the output so that it doesn't have to happen
+    #       during plotting
+
     # Once all the files have been processed, write out summary report in 
     # each of the directories
     with open(f"summary_{mass}.datsum", "w") as f:
+
         f.write(f"#theta\t {header[1:]}")   # Write the header
 
         for i in range(num_data_files):
-            f.write(f"{theta}\t")
             for j in range(num_columns_in_file):
                 f.write(f"{last_vals[i][j]}\t")
             f.write("\n")
@@ -53,12 +56,16 @@ def main():
     
     # Get list of directories
     dir_list = nnpc.get_list_of_directories()
-    results = len(dir_list)*[None]
-    with ppe(max_workers = len(dir_list)) as executor:
-        result = executor.map(analyze_file, dir_list)
-        
-    
-    #os.chdir(head)
+    results = len(dir_list)*[None]  # Smart error checking would make this some
+        # relate index to folder for verification - probably a dictionary
+
+    if len(sys.argv) == 1:  # Nothing specified
+        #TODO: Need MPI pool to be constrained by SLURM
+        # OR
+        # len(dir_list) % (something reasonable for sharing ISAAC - 20?)
+        with ppe(max_workers = 20) as executor:
+            results = executor.map(analyze_file, dir_list)
+        #results = map(analyze_file, dir_list)
 
 if __name__ == "__main__":
     main()

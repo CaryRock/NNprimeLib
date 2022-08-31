@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-def loadNNprimeFile(phile):
+def loadNNprimeFile(phile: str) -> [float, float, list, np.array]:
     with open(phile, "r") as f:
         _ = f.readline()
         mass, theta = f.readline().split()
@@ -11,10 +11,9 @@ def loadNNprimeFile(phile):
 
         data = np.loadtxt(phile, skiprows = 3, comments = "#")
 
-        return mass, theta, header, data
-    f.close()
+    return mass, theta, header, data
 
-def loadNNprimeSummary(phile):
+def loadNNprimeSummary(phile: str) -> float:
     with open(phile, "r") as f:
         _ = f.readline()    # Mulch the header
         mass = float(phile[8:-7])
@@ -22,7 +21,7 @@ def loadNNprimeSummary(phile):
 
         return mass, data
 
-def get_list_of_directories():
+def get_list_of_directories() -> list:
     dirs = []
     raw = os.listdir()  # Returns list of all items in the directory
 
@@ -31,9 +30,12 @@ def get_list_of_directories():
         if os.path.isdir(r):
             dirs.append(r)
 
+    if len(dirs) == 0:
+        dirs.append(os.getcwd())
+        
     return dirs
 
-def get_raw_list_of_files(dir):
+def get_raw_list_of_files(dir: str) -> list:
     file_list = []
     os.chdir(dir)
     raw = os.listdir()
@@ -44,7 +46,7 @@ def get_raw_list_of_files(dir):
 
     return file_list
 
-def get_list_of_data_files(raw_list, ext = '.dat'):
+def get_list_of_data_files(raw_list: list, ext: str = '.dat') -> list:
     refined_list = []
     for r in raw_list:
         if r.endswith(ext):

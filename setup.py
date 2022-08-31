@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
         name            = 'NNprimeLib',
         packages        = find_packages(include = ["NNprimeLib"]),
-        version         = '0.3.0',
+        version         = '0.3.3',
         description     = "Collection of convenience scripts for analyzing N-N' simulation data.",
         author          = "Cary Rock",
         license         = "GPL3",
@@ -14,5 +14,5 @@ setup(
         scripts         = ["bin/analyze_nnp_data.py", 
                             "bin/plot_rho_vs_theta.py", 
                             "bin/plot_rho_coord.py",
-                            "color_log_plot.py"]
+                            "bin/color_log_plot.py"]
 )
