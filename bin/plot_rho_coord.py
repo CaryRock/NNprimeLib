@@ -49,7 +49,7 @@ def main(argv = None):
     datafiles = [str(i) for i in inputs.files]
 
     headers = ""
-    scale = 1e0 # Expecting global material thickness to be in mm
+    scale = 1e3 # Expecting global material thickness to be in m
     mass = []
     theta0 = []
     

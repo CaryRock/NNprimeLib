@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
         name            = 'NNprimeLib',
         packages        = find_packages(include = ["NNprimeLib"]),
-        version         = '0.3.3',
+        version         = '0.3.4',
         description     = "Collection of convenience scripts for analyzing N-N' simulation data.",
         author          = "Cary Rock",
         license         = "GPL3",
